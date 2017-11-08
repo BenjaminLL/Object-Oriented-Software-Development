@@ -1,0 +1,1 @@
+cat myfile.txt | egrep "cs246" | head -1

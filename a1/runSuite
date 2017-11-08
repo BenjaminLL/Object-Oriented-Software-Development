@@ -1,0 +1,38 @@
+#!/bin/bash
+
+usage () {
+  echo "Usage: $0 suite-file program" >&2
+  exit 1
+}
+
+if [ ${#} -ne 2 ]; then
+  usage
+fi
+
+for i in $(cat ${1}); do
+  if [ ! -r "${i}.in" -o ! -r "${i}.out" ]; then
+    echo "The file ${i}.in or ${i}.out doesn't exist or is unreadable" >&2
+    exit 1
+  fi
+ 
+  temp=$(mktemp)
+  
+  if [ -r "${i}.args" ]; then
+	${2} $(cat "${i}.args") < "${i}.in" 1> ${temp}
+  else 
+  	${2} < "${i}.in" 1> ${temp}
+  fi
+  
+  diff "${i}.out" ${temp} > /dev/null
+  
+  if [ ${?} -ne 0 ]; then
+    echo "Test failed: ${i}"
+    echo "Input:" 
+    cat ${i}.in 
+    echo "Expected:" 
+    cat ${i}.out
+    echo "Actual:" 
+    cat ${temp}
+ fi
+ rm ${temp}
+done	

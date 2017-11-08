@@ -1,0 +1,1 @@
+cat myfile.txt | egrep -i "linux\.student\.cs\.uwaterloo\.ca" | wc -l

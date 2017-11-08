@@ -1,0 +1,12 @@
+#!/bin/bash
+
+a=$(cat $2 | egrep $1 | wc -l)
+b=$(cat $3 | egrep $1 | wc -l)
+
+if [ $a -eq $b ]; then
+	echo "$2 $3"
+elif [ $a -lt $b ]; then
+	echo $3
+else
+	echo $2
+fi

@@ -1,0 +1,1 @@
+cat myfile.txt | egrep -v "cs246" | wc -l

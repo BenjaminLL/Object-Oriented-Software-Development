@@ -1,0 +1,24 @@
+#!/bin/bash
+
+usage () {
+  echo "Usage: $0 suite-file program" >&2
+  exit 1
+}
+
+if [ ${#} -ne 2 ]; then
+  usage
+fi
+
+for i in $(cat $1); do
+	if [ ! -r "${i}.in" ]; then
+		echo "The file ${i}.in doesn't exist or is unreadable" >&2
+		exit 1
+	fi
+	
+	if [ -r "${i}.args" ]; then
+		${2} $(cat "${i}.args") < "${i}.in" > "${i}.out"
+	else
+		$(${2} < "${i}.in" > "${i}.out")
+	fi
+done
+	
